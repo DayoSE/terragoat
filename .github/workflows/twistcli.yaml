@@ -1,8 +1,5 @@
 on: [ push, workflow_dispatch ]
 
-env:
-  IMAGE_NAME: ${{ github.repository }}:${{ github.sha }}
-
 jobs:
   build-and-scan:
     name: Build and scan image
@@ -13,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build the image
-        run: docker build -t $IMAGE_NAME .
+        run: docker build -t pythontest:vuln .
 
       - name: Prisma Cloud image scan
         id: scan
