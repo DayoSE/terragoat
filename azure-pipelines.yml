@@ -23,7 +23,7 @@ steps:
   displayName: 'Install Python 3.8'
 - script: pip install checkov
   displayName: 'Install Checkov'
-- script: checkov -d "terraform/alicloud" --bc-api-key "2756b01-c350-4683-a0d7-cbb241dc86fc::SflOUWFJvXX1bPYbv7pNdF8RTIY=" --repo-id "DayoSE/terragoat"
+- script: checkov -d "terraform/alicloud" --bc-api-key "25756b01-c350-4683-a0d7-cbb241dc86fc::SflOUWFJvXX1bPYbv7pNdF8RTIY=" --repo-id "DayoSE/terragoat"
   displayName: 'Scan with Prisma Cloud'
   env:
     PRISMA_API_URL: 'https://api.prismacloud.io'
