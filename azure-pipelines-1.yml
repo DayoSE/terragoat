@@ -26,4 +26,4 @@ steps:
 - script: checkov -d . --bc-api-key "81c18ce2-88a2-4666-ada0-f4df626dd6d1::kF7n1onO88MXOwxXb82moluHCVg=" --repo-id "DayoSE/terragoat" 
   displayName: 'Scan with Prisma Cloud'
   env:
-    PRISMA_API_URL: 'https://api.prismacloud.io'
+    PRISMA_API_URL: 'https://app4.prismacloud.io'
