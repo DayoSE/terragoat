@@ -1,0 +1,29 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+  displayName: 'Install Python 3.8'
+- script: pip install checkov
+  displayName: 'Install Checkov'
+- script: checkov -d terraform/azure --bc-api-key 8f46eb00-b894-47d8-bb0d-a4d12f73005c::5N0csulxGTukWtzsqId+yvwiTLU= --repo-id "DayoSE/terragoat"
+  displayName: 'Scan with Prisma Cloud for Wings CU'
+  env:
+    PRISMA_API_URL: https://api4.prismacloud.io/
