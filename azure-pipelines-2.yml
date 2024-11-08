@@ -23,7 +23,7 @@ steps:
   displayName: 'Install Python 3.8'
 - script: pip install checkov
   displayName: 'Install Checkov'
-- script: checkov  --bc-api-key 8f46eb00-b894-47d8-bb0d-a4d12f73005c::5N0csulxGTukWtzsqId+yvwiTLU= --repo-id "DayoSE/terragoat"
+- script: checkov  --bc-api-key e6c4c97c-3758-4b2e-b1bd-84a7e17632d3::Fm4LCl0ahiA1Mncd4UgrQEWMEgw= --repo-id "DayoSE/terragoat"
   displayName: 'Scan with Prisma Cloud for Wings CU'
   env:
     PRISMA_API_URL: https://api4.prismacloud.io/
