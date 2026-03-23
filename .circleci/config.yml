@@ -1,0 +1,45 @@
+version: 2.1
+
+executors:
+  docker-executor:
+    docker:
+      - image: cimg/base:2025.12
+    environment:
+      CORTEX_API_URL: "https://{CORTEX_URL}"
+      CORTEX_CLI_VERSION: "0.8.11"
+
+jobs:
+  setup-environment:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Get Temporary Token and Pull Docker Image
+          command: |
+            export TOKEN_RESPONSE=$(curl --location "${CORTEX_API_URL}/public_api/cas/v1/cortex-cli/create-token" \
+                                        --header "Authorization: ${CORTEX_API_KEY}" \
+                                        --header "x-xdr-auth-id: ${CORTEX_API_KEY_ID}" \
+                                        --header "Content-Type: application/json" \
+                                        --data "{}" -s)
+            export TEMP_TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.token')
+            docker pull distributions-dev.traps.paloaltonetworks.com/cli-docker/${TEMP_TOKEN}/method:amd64-${CORTEX_CLI_VERSION}-dev
+            docker tag distributions-dev.traps.paloaltonetworks.com/cli-docker/${TEMP_TOKEN}/method:amd64-${CORTEX_CLI_VERSION}-dev cortexcli:${CORTEX_CLI_VERSION}
+      - run:
+          name: Run Cortex CLI Container
+          command: |
+            docker run --rm cortexcli:${CORTEX_CLI_VERSION} \
+                        --api-base-url ${CORTEX_API_URL} \
+                        --api-key ${CORTEX_API_KEY} \
+                        --api-key-id ${CORTEX_API_KEY_ID} \
+                        code scan \
+                        --directory . \
+                        --repo-id <REPLACE WITH REPO_OWNER/REPO_NAME> \
+                        --branch "${CIRCLE_BRANCH}"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - setup-environment:
+          context: cortex-secrets
